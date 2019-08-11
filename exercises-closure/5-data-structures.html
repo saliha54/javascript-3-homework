@@ -37,9 +37,18 @@
       <h3>exercise 1</h3>
       <script id="snippet-1">
 {
-  function close_array() {
-    // write this!
+  function close_array(arr) {
+    return [
+        function(a) {arr.push(a)},
+        function() {return arr.pop()},
+        function(a) { arr.unshift(a)},
+        function() {return arr.shift()},
+        function() {return arr.length},
+        function(a) {return arr[a]}
+        ]
+    
   }
+
 
   // the asserts all work, modifying them will make this harder
   const closed_array = close_array([]);
@@ -80,13 +89,17 @@
       <script id="snippet-2">
 {
   // write a close_object function that will pass all of these asserts
-  function close_object() {
-    // write this!
-  }
-
+  function close_object(arg) {
+this.arg = arg;
+this.size = function(){return Object.keys(this.arg).length};
+this.keys = function(){return Object.keys(this.arg)}
+this.get = function(arg1) {return this.arg[arg1]}
+this.set = function(arg1, arg2){this.arg[arg1] = arg2; return arg2}
+this.remove = function(arg1){return delete this.arg[arg1]}
+}
 
   // the asserts all work, modifying them will make this harder
-  const closed_obj = close_object({});
+  const closed_obj = new close_object({});
 
   console.assert(typeof closed_obj.size === "function", "exercise 2", "a");
   console.assert(typeof closed_obj.keys === "function", "exercise 2", "b");
@@ -122,13 +135,23 @@
 {
   // write a closure_object function that will pass all of these asserts
   function functional_object(_permanent, _changeable) {
-    /* 
-      write this function body
-    */
+    this.permanent = _permanent;
+    this.changeable = _changeable;
+    let v ="" ;
   }
 
+functional_object.prototype.first = function(){return this.permanent}
+functional_object.prototype.second = function(arg){
+  if(!arg && !this.v)
+  { return this.changeable} 
+  else if(arg && !this.v)
+  {this.v = arg;}
+  else if(arg && this.v)
+  {this.v += arg;}
+  return this.v }
+
   // the asserts all work, modifying them will make this harder
-  const obj = functional_object("fixed", "not fixed");
+  const obj = new functional_object("fixed", "not fixed");
   
   console.assert(delete obj.first === false, "exercise 3", "a");
   console.assert(delete obj.second === false, "exercise 3", "b");
