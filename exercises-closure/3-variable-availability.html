@@ -119,20 +119,21 @@
           }
   }
 
-  ; // write this
-  ; // write this
-  ; // write this
+  let global_var = "x"; // write this
+  const closed_1 = close_it("y"); // write this
+  const result_1 = closed_1("z"); // write this
   console.assert(result_1 === "x y z", "exercise 1", "a");
 
   global_var = "4";
   const closed_2 = close_it("7");
   const result_2 = closed_2("1");
-  conosle.assert(result_2 === null, "exercise 1", "b");
+  console.assert(result_2 === "4 7 1", "exercise 1", "b");
 
   const result_3 = closed_2("0");
-  conosle.assert(result_3 === null, "exercise 1", "c");
+  console.assert(result_3 === "4 7 0", "exercise 1", "c");
 
-  ; // write as many lines as necessary
+  global_var = "z"; // write this
+  const result_4 = closed_1("x"); // write this
   console.assert(result_4 === "z y x", "exercise 1", "d");
 }
       </script>
@@ -148,6 +149,7 @@
       <script id="exercise-2-snip">
 { 
 
+  
   function no_free_vars(arg) {
     return arg;
   }
@@ -162,27 +164,27 @@
     }
   }
 
-  const result_0 = no_free_vars(/*  */);
+  const result_0 = no_free_vars("ee");
   console.assert(result_0 === "ee", "exercise 2", "a")
 
-  ; // write as many lines as you need
+  let global_var = "e"; // write as many lines as you need
   const result_1 = reads_global("e");
   console.assert(result_1 === "ee", "exercise 2", "b");
 
-  ; // write as many lines as you need
+  const closure_1 = close_it("e"); // write as many lines as you need
   const result_2 = closure_1("e");
   console.assert(result_2 === "ee", "exercise 2", "c");
 
-  ; // write as many lines as you need
-  const result_3 = closure_1(reads_global(/* */));
+  const result_3 = closure_1(reads_global(""));
   console.assert(result_3 === result_1, "exercise 2", "d");
 
-  ; // write as many lines as you need
-  const result_4 = closure_2(reads_global(/* */));
+  const closure_2 = close_it(""); // write as many lines as you need
+  const result_4 = closure_2(reads_global("e"));
   console.assert(result_4 === result_1, "exercise 2", "e");
 
-  ; // write as many lines as you need
-  const result_5 = reads_global(closure_3(/* */));
+  global_var = "hard";
+  const closure_3 = close_it("really ");; // write as many lines as you need
+  const result_5 = reads_global(closure_3("this is "));
   console.assert(result_5 === "this is really hard", "exercise 2", "f");
 }
       </script>
@@ -196,15 +198,15 @@
       <h3>exercise 3</h3>
       <script id="exercise-3-snip">
 {
-  let global_var = "first value";
+    let global_var = "first value";
 
   function x(global_var) {
     global_var = "new value";
     return global_var;
   }
   const result_1 = x(global_var);
-  console.assert(global_var === null, "exercise 3", "a");
-  console.assert(result_1 === null, "exercise 3", "b");
+  console.assert(global_var === "first value", "exercise 3", "a");
+  console.assert(result_1 === "new value", "exercise 3", "b");
 
   
   function y() {
@@ -217,10 +219,10 @@
   const closure_1 = y();
 
   const result_2 = closure_1("plantain");
-  console.assert(result_2 === null, "exercise 3", "c");
+  console.assert(result_2 === "plantain dumpty", "exercise 3", "c");
 
   const result_3 = closure_1("plantain");
-  console.assert(result_3 === null, "exercise 3", "d");
+  console.assert(result_3 === "plantain dumpty", "exercise 3", "d");
 
   function z() {
     let global_var = "humpty";
@@ -232,13 +234,12 @@
   const closure_2 = z();
 
   const result_4 = closure_2("mindy");
-  console.assert(result_4 === null, "exercise 3", "e");
-  console.assert(global_var === null, "exercise 3", "f");
+  console.assert(result_4 === "humptymindy", "exercise 3", "e");
+  console.assert(global_var === "first value", "exercise 3", "f");
 
   const result_5 = closure_2("ydnim");
-  console.assert(result_5 === null, "exercise 3", "g");
-  console.assert(global_var === null, "exercise 3", "h");
-
+  console.assert(result_5 === "humptymindyydnim", "exercise 3", "g");
+  console.assert(global_var === "first value", "exercise 3", "h");
 
 
 }
@@ -256,7 +257,7 @@
 {
   // fix the error, in a way that matches the variable names
   try {
-    function b() {
+    function b(arg) {
       arg;
     }
     b();
@@ -280,9 +281,13 @@
 {
   // fix the error, in a way that matches the variable names
   try {
-    function closure() {
+    function closure(parent_arg) {
       parent_arg;
+      return function(){
+        return function(){}
+        }
     }
+    const c_1 = closure();
     const c_2 = c_1(3);
     c_2();
 
@@ -305,7 +310,8 @@
 {
   // fix the error, in a way that matches the variable names
   try {
-    function d() {
+    let global_2;
+    function d(parent_arg, arg) {
       arg; global_2; parent_arg;
     }
     d();
@@ -328,8 +334,10 @@
 {
   // fix the error, in a way that matches the variable names
   try {
-    function e() {
+    let global_3;
+    function e(parent_arg) {
       global_3; parent_arg;
+      return function(){}
     }
     const e_2 = e();
     e_2();
@@ -352,8 +360,8 @@
 {
   // fix the error, in a way that matches the variable names
   try {
-    function f() {
-      own_arg;
+    function f(parent_arg) {
+      let parent_local;
       return function(own_arg) {
         parent_local; parent_arg;
       }
@@ -381,8 +389,8 @@
   // fix the error, in a way that matches the variable names
   try {
 
-    function g() {
-      own_arg;
+    function g(parent_arg) {
+      let parent_local;
       return function(own_arg) {
         parent_local; parent_arg;
       }
@@ -408,6 +416,7 @@
 {
   // fix the error, paying attention to the variable names
   try {
+    let global_1;
     function h() {
       global_1;
     }
