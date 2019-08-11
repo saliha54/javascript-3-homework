@@ -161,24 +161,24 @@
   function add(a, b) {
     return a + b;
   }
-  function subract(a, b) {
-    return a + b;
+  function subtract(a, b) {
+    return a - b;
   }
 
   const result_1 = add(result_0, 3);
-  console.assert(result_1 === null, "exercise 1", "a");
+  console.assert(result_1 === 3, "exercise 1", "a");
 
-  const result_2 = add(result_1, null);
+  const result_2 = add(result_1, -4);
   console.assert(result_2 === -1, "exercise 1", "b");
 
-  ; // write this line
+  const result_3 = add(result_2, 11);
   console.assert(result_3 === 10, "exercise 1", "c");  
-
-  ; // write this line
+  
+  const result_4 = add(result_2, NaN);
   console.assert(result_4 !== result_4, "exercise 1", "d");  
 
   const result_5 = add(result_0, 3);
-  console.assert(result_5 === null, "exercise 1", "e");
+  console.assert(result_5 === 3, "exercise 1", "e");
 }
       </script>
       <button onclick="copy_code('snippet-1')">run in console</button>
@@ -199,25 +199,25 @@
     last_result += a;
     return last_result;
   }
-  function subract(a) {
+  function subtract(a) {
     last_result -= a;
     return last_result;
   }
 
   add(3); // call either add or subtract
-  console.assert(last_result === null, "exercise 2", "a");
+  console.assert(last_result === 3, "exercise 2", "a");
 
-  ; // call either add or subtract
+  subtract(4); // call either add or subtract
   console.assert(last_result === -1, "exercise 2", "b");
 
-  ; // call either add or subtract
+  add(11); // call either add or subtract
   console.assert(last_result === 10, "exercise 2", "c");  
-
-  ; // call either add or subtract
+  
+  add(NaN)
   console.assert(last_result !== last_result, "exercise 2", "d");  
 
   add(3); // call either add or subtract
-  console.assert(last_result !== null, "exercise 2", "e");
+  console.assert(isNaN(last_result), "exercise 2", "e");
 }
       </script>
       <button onclick="copy_code('snippet-2')">run in console</button>
@@ -246,12 +246,12 @@
   closures_1 = null;
 
   add_1(4); 
-  console.assert(result_1() === null, "exercise 3", "a");
+  console.assert(result_1() === 4, "exercise 3", "a");
 
-  ; // call either add_1 or sub_1
+  sub_1(5); // call either add_1 or sub_1
   console.assert(result_1() === -1, "exercise 3", "b");
 
-  ; // call either add_1 or sub_1
+  add_1(6); // call either add_1 or sub_1
   console.assert(result_1() === 5, "exercise 3", "c");  
 
   let closures_2 = calc_close_it();
@@ -259,20 +259,21 @@
   closures_2 = null;
 
   add_2(4); 
-  console.assert(result_2() === null, "exercise 3", "d");
+  console.assert(result_2() === 4, "exercise 3", "d");
 
-  ; // call either add_2 or sub_2
+  add_2(4); // call either add_2 or sub_2
   console.assert(result_2() === 8, "exercise 3", "e");
 
-  ; // call either add_2 or sub_2
-  console.assert(result_2() === NaN, "exercise 3", "f"); 
-
-  console.assert(result_1() === null, "exercise 3", "g"); 
+  add_2(NaN); // call either add_2 or sub_2
+  console.assert(isNaN(result_2()), "exercise 3", "f"); 
+  
+  add_1(4);
+  console.assert(result_1() === 9, "exercise 3", "g"); 
 
   add_1(4); 
-  console.assert(result_1() === null, "exercise 3", "h");
+  console.assert(result_1() === 13, "exercise 3", "h");
   add_2(4); 
-  console.assert(result_2() === null, "exercise 3", "i");
+  console.assert(isNaN(result_2()), "exercise 3", "i");
 
 }
       </script>
