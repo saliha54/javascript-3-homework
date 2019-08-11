@@ -156,24 +156,23 @@
       <script id="exercise-1-snip">
 {
   function no_free_variables(arg) {
-    /*
-      write this function body
-    */
+    let local_var = arg;
+    return local_var;
   }
 
   const result_1 = no_free_variables("tim");
   const result_2 = no_free_variables("walks");
   const result_3 = no_free_variables("quickly");
-  console.assert(result_1 === null, "exercise 1", "a");
-  console.assert(result_2 === null, "exercise 1", "b");
-  console.assert(result_3 === null, "exercise 1", "c");
+  console.assert(result_1 === "tim", "exercise 1", "a");
+  console.assert(result_2 === "walks", "exercise 1", "b");
+  console.assert(result_3 === "quickly", "exercise 1", "c");
 
   const result_4 = no_free_variables(result_2);
   const result_5 = no_free_variables(result_2);
-  console.assert(result_4 === null, "exercise 1", "d");
-  console.assert(result_5 === null, "exercise 1", "e");
+  console.assert(result_4 === "walks", "exercise 1", "d");
+  console.assert(result_5 === "walks", "exercise 1", "e");
 
-  ; // write this line
+  const result_6 = no_free_variables("local scope"); // write this line
   console.assert(result_6 === "local scope", "exercise 1", "f");
 
 }
@@ -190,9 +189,8 @@
       <script id="exercise-2-snip">
 {
   function uses_global(arg) {
-    /*
-      write this function body
-    */
+   let local = "local";
+   return arg + global + local;
   }
 
   let global = "global";
@@ -204,13 +202,13 @@
   console.assert(result_2 === "undefinedgloballocal", "exercise 2", "b");
 
   global = uses_global("spoon");
-  console.assert(global === null, "exercise 2", "c");
+  console.assert(global === "spoongloballocal", "exercise 2", "c");
 
-  ; // write this line
+  const result_3 = uses_global(""); // write this line
   console.assert(result_3 === "spoongloballocallocal", "exercise 2", "d");
 
   global = uses_global("spoon");
-  console.assert(global === null, "exercise 2", "e");
+  console.assert(global === "spoonspoongloballocallocal", "exercise 2", "e");
 }
       </script>
       <button onclick="copy_code('exercise-2-snip')">run in console</button>
@@ -224,33 +222,33 @@
       <script id="exercise-3-snip">
 {
   function uses_closure(parent_arg) {
-    /*
-      write the body of this function
-    */
+    return function(arg){
+      return parent_arg + arg;
+    }
   }
 
   const closure_1 = uses_closure("pap");
   const closure_2 = uses_closure("<>><<>");
 
   const result_1 = closure_1("+(=)+");
-  console.assert(result_1 === null, "exercise 3", "a");
+  console.assert(result_1 === "pap+(=)+", "exercise 3", "a");
 
   const result_2 = closure_2("+(=)+");
-  console.assert(result_2 === null, "exercise 3", "c");
+  console.assert(result_2 === "<>><<>+(=)+", "exercise 3", "c");
 
   const result_3 = closure_1("abc");
-  console.assert(result_3 === null, "exercise 3", "a");
+  console.assert(result_3 === "papabc", "exercise 3", "a");
   
   const result_4 = closure_2("xyz");
-  console.assert(result_4 === null, "exercise 3", "c");
+  console.assert(result_4 === "<>><<>xyz", "exercise 3", "c");
 
-  ; // write this line
-  ; // write this line
+  const closure_3 = uses_closure("--0"); // write this line
+  const result_5 = closure_3("--1--"); // write this line
   console.assert(result_5 === "--0--1--", "exercise 3", "d");
 
-  ; // write this line
-  ; // write this line
-  console.assert(result_5 === "--1--0--", "exercise 3", "d");
+  const closure_4 = uses_closure("--1"); // write this line
+  const result_6 = closure_4("--0--"); // write this line
+  console.assert(result_6 === "--1--0--", "exercise 3", "d");
 }
       </script>
       <button onclick="copy_code('exercise-3-snip')">run in console</button>
@@ -264,9 +262,9 @@
       <script id="exercise-4-snip">
 {
   function all_together(parent_arg) {
-    /*
-      write this function body
-    */
+    return function(arg){
+      return global_variable + "-" + arg + "-" + parent_arg;
+    }
   }
 
   const closure_1 = all_together("first");
@@ -277,19 +275,19 @@
   console.assert(result_1 === "gv-xx-first", "exercise 4", "a");
 
   const result_2 = closure_2("x");
-  console.assert(result_1 === null, "exercise 4", "b");
+  console.assert(result_2 === "gv-x-second", "exercise 4", "b");
 
   global_variable = "side effect";
   const result_3 = closure_2(")(");
-  console.assert(result_3 === null, "exercise 4", "c");
+  console.assert(result_3 === "side effect-)(-second", "exercise 4", "c");
 
   global_variable = "another one";
   const result_4 = closure_1("()");
-  console.assert(result_4 === null, "exercise 4", "d");
+  console.assert(result_4 === "another one-()-first", "exercise 4", "d");
 
-  ; // write this line
-  ; // write this line
-  ; // write this line
+  global_variable = "<"; // write this line
+  const closure_3 = all_together(">"); // write this line
+  const result_5 = closure_3("|"); // write this line
   console.assert(result_5 === "<-|->", "exercise 4", "e");
 
 }
